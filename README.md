@@ -104,5 +104,3 @@ Ensure `US_recipes_null.json` is placed in the `src/main/resources/` folder. On 
 * **Data Integrity**: Used `@JsonIgnoreProperties(ignoreUnknown = true)` to handle inconsistent or extra fields in the raw dataset without causing parsing errors.
 
 ---
-
-**Would you like me to also generate the SQL script file separately so you can include it in your submission folder?**
