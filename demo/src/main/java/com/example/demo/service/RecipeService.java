@@ -11,19 +11,36 @@ import com.example.demo.repository.RecipeRepository;
 
 @Service
 public class RecipeService {
+
     @Autowired
     private RecipeRepository repository;
 
+    /**
+     * Requirement: Logic for POST /recipes
+     * Automatically calculates total_time before saving to MySQL.
+     */
     public RecipeEntity saveRecipe(RecipeEntity recipe) {
+        // Logic: Calculate total_time = prep + cook
+        int prep = (recipe.getPrep_time() != null) ? recipe.getPrep_time() : 0;
+        int cook = (recipe.getCook_time() != null) ? recipe.getCook_time() : 0;
         
-        if (recipe.getPrep_time() != null && recipe.getCook_time() != null) {
-            recipe.setTotal_time(recipe.getPrep_time() + recipe.getCook_time());
-        }
+        recipe.setTotal_time(prep + cook);
+        
         return repository.save(recipe);
     }
 
+    /**
+     * Requirement: Logic for GET /recipes/top
+     * Fetches top rated recipes with a limit.
+     */
     public List<RecipeEntity> getTopRecipes(int limit) {
-       
         return repository.findByOrderByRatingDesc(PageRequest.of(0, limit));
+    }
+
+    /**
+     * Helper: Get all recipes for a standard GET request
+     */
+    public List<RecipeEntity> getAllRecipes() {
+        return repository.findAll();
     }
 }

@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,28 +20,26 @@ import com.example.demo.repository.RecipeRepository;
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
+
     @Autowired
     private RecipeRepository repository;
 
-    @GetMapping("/top")
-    public ResponseEntity<Map<String, Object>> getTopRecipes(@RequestParam(defaultValue = "5") int limit) {
-       
-        List<RecipeEntity> topRecipes = repository.findByOrderByRatingDesc(PageRequest.of(0, limit));
-        
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", topRecipes); 
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping
     public ResponseEntity<?> createRecipe(@RequestBody RecipeEntity recipe) {
-        
-        if (recipe.getTitle() == null || recipe.getCuisine() == null) {
-            return ResponseEntity.badRequest().body("Title and Cuisine are required.");
+        if (recipe.getTitle() == null || recipe.getCuisine() == null || 
+            recipe.getPrep_time() == null || recipe.getCook_time() == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Mandatory fields missing"));
         }
-        
-        recipe.setTotal_time((recipe.getPrep_time() != null ? recipe.getPrep_time() : 0) + 
-                            (recipe.getCook_time() != null ? recipe.getCook_time() : 0));
-        return ResponseEntity.ok(repository.save(recipe));
+
+        // Logical requirement: Calculate total_time
+        recipe.setTotal_time(recipe.getPrep_time() + recipe.getCook_time());
+        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(recipe));
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<Map<String, Object>> getTopRecipes(@RequestParam(defaultValue = "5") int limit) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", repository.findByOrderByRatingDesc(PageRequest.of(0, limit)));
+        return ResponseEntity.ok(response);
     }
 }

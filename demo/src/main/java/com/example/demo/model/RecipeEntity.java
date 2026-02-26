@@ -6,6 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,24 +19,30 @@ import lombok.Data;
 @Entity
 @Table(name = "recipes")
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true) 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; 
+    private Integer id;
 
     private String title;
-    private String cuisine; 
-    private Float rating; 
+    private String cuisine;
+    private Float rating;
+
+    @JsonProperty("prep_time")
     private Integer prep_time;
-    private Integer cook_time; 
-    private Integer total_time; 
-    
+
+    @JsonProperty("cook_time")
+    private Integer cook_time;
+
+    @JsonProperty("total_time")
+    private Integer total_time;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> nutrients; 
+    private Map<String, Object> nutrients;
 
-    private String serves; 
+    private String serves;
 }
