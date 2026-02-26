@@ -6,7 +6,7 @@ To satisfy the **Submission Instructions** in your **Recipe.pdf**, this README i
 
 This project is a Spring Boot application designed to manage and query recipe data. It features an automated data migration pipeline that parses a raw JSON dataset (`US_recipes_null.json`), calculates business logic (total time), and persists the information into a MySQL database for access via a RESTful API.
 
-## 🏗️ Architecture & Workflow
+##  Architecture & Workflow
 
 The application follows a standard **N-Tier Architecture**:
 
@@ -17,7 +17,7 @@ The application follows a standard **N-Tier Architecture**:
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * **Java 17**
 * **Spring Boot 3.x** (Web, Data JPA)
@@ -27,7 +27,7 @@ The application follows a standard **N-Tier Architecture**:
 
 ---
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ### 1. Database Configuration
 
@@ -57,7 +57,7 @@ Ensure `US_recipes_null.json` is placed in the `src/main/resources/` folder. On 
 
 ---
 
-## 🛣️ API Endpoints
+##  API Endpoints
 
 ### 1. Create a Recipe
 
@@ -88,7 +88,7 @@ Ensure `US_recipes_null.json` is placed in the `src/main/resources/` folder. On 
 
 ---
 
-## 🧪 Testing Instructions
+##  Testing Instructions
 
 ### Using Postman
 
@@ -97,7 +97,7 @@ Ensure `US_recipes_null.json` is placed in the `src/main/resources/` folder. On 
 
 ---
 
-## 📝 Design Decisions & Validation
+##  Design Decisions & Validation
 
 * **JSON Mapping**: Used `@JsonProperty` to bridge the gap between snake_case JSON keys (`prep_time`) and Java camelCase fields.
 * **Validation**: Implemented checks in the Controller to ensure mandatory fields like `title` and `cuisine` are present before saving.
